@@ -38,6 +38,12 @@ function App() {
     setBank(bank)
   }
 
+  const createMortgage = async (mortgage) => {
+    // console.log(getFormLocalStorage('token').user._id)
+    const res = await API.createMortgage('/' + getFormLocalStorage('token').user._id, mortgage, getFormLocalStorage('token').token)
+    // console.log(mortgage)
+  }
+
   const signUp = async (func) => {
     let user = {
       username,
@@ -171,6 +177,7 @@ function App() {
             monthlyPayment={monthlyPayment}
             setBank={setBank}
             bank={bank}
+            createMortgage={createMortgage}
           />
         </Route>
         <Route path='/signin'>

@@ -41,8 +41,8 @@ const API = {
                 return 400
             })
     },
-    createMortgage: (mortgage, user_id) => {
-        return axios.post(baseUrl + '/mortgage' + user_id)
+    createMortgage: (user_id, mortgage, token) => {
+        return axios.post(baseUrl + '/mortgage' + user_id, mortgage, { headers: { 'access_token': token } })
             .then(res => {
                 return res
             }).catch(err => {

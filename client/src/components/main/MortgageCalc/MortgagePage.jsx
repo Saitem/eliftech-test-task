@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { MortgageCalc } from './MortgageCalc'
 import { MortgageTable } from './MortgageTable'
 
-export const MortgagePage = ({ banks, monthlyPayment, setBank, bank }) => {
+export const MortgagePage = ({ banks, monthlyPayment, setBank, bank, createMortgage }) => {
 
     const [monthObj, setMonthObj] = useState([])
     const [error, setError] = useState('')
@@ -58,6 +58,18 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank }) => {
             })
         })
         setTableObj(arr)
+        console.log(JSON.parse(localStorage.getItem('token')).user._id)
+        createMortgage({
+            initialLoan,
+            downPayment,
+            historyTable: arr,
+            bank: {
+                name: bank.name,
+                interestRate: bank.interestRate,
+                loanTerm: bank.loanTerm
+            },
+            user_id: JSON.parse(localStorage.getItem('token')).user._id
+        })
     }
 
     return (
