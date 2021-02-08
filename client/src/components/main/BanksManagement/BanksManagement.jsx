@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import { BanksList } from './BanksList'
 import { CreateBank } from './CreateBank'
 
-export const BanksManagement = ({ banks, createBank, removeBank, openModal, bank, setBank }) => {
+export const BanksManagement = ({ banks, createBank, removeBank, openModal, bank, setBank, err }) => {
     return (
         <div>
             <CreateBank
@@ -11,6 +11,7 @@ export const BanksManagement = ({ banks, createBank, removeBank, openModal, bank
                 bank={bank}
                 setBank={setBank}
             />
+            <Box display="flex" justifyContent="center" color="red">{err}</Box>
             <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
                 <div>
                     BanksManagement

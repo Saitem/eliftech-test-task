@@ -1,49 +1,71 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField'
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button';
 
-
-export const CreateBank = ({createBank, bank, setBank}) => {
-    const classes = useStyles();
-    const [error, setError] = useState('')
+export const CreateBank = ({ createBank, bank, setBank }) => {
+    // const classes = useStyles();
 
     const constraintСheck = (value, key, type, min, max) => {
-        if(value <= max && value >= min || type === 'string') {
-            setBank({...bank, [key]: value})
+        if (value <= max && value >= min || type === 'string') {
+            setBank({ ...bank, [key]: value })
         } else {
-            return 
+            return
         }
     }
 
+
+
     return (
-        <div>
-            Name:<input
+        <Box display="flex" justifyContent="center">
+            <TextField
+                id="filled-basic"
+                label="Name:"
+                variant="filled"
                 type="text"
                 value={bank.name}
                 onChange={e => constraintСheck(e.target.value, 'name', 'string')}
             />
-            
-            Interest rate: <input
+
+            <TextField
+                id="filled-basic"
+                label="Interest rate:"
+                variant="filled"
                 type="number"
                 value={bank.interestRate}
                 onChange={e => constraintСheck(+e.target.value, 'interestRate', 'number', 1, 100)}
             />
-            Maximum loan: <input
+            <TextField
+                id="filled-basic"
+                label="Maximum loan:"
+                variant="filled"
                 type="number"
                 value={bank.maximumLoan}
                 onChange={e => constraintСheck(+e.target.value, 'maximumLoan', 'number', 1, 10000000)}
             />
-            Minimum down payment: <input
+            <TextField
+                id="filled-basic"
+                label="Minimum down payment:"
+                variant="filled"
                 type="number"
                 value={bank.minimumDownPayment}
                 onChange={e => constraintСheck(+e.target.value, 'minimumDownPayment', 'number', 1, 100)}
             />
-            Loan term: <input
+            <TextField
+                id="filled-basic"
+                label="Loan term:"
+                variant="filled"
                 type="number"
                 value={bank.loanTerm}
                 onChange={e => constraintСheck(+e.target.value, 'loanTerm', 'number', 1, 100)}
             />
-            {error}
-            <button onClick={() => createBank(bank)}>Create</button>
-        </div>
+            
+            <Button 
+                variant="contained" color="primary"
+                onClick={() => createBank(bank)}>Create</Button>
+            
+            
+        </Box>
     );
 }

@@ -11,28 +11,10 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank }) => {
     const [tableObj, setTableObj] = useState([])
     const [mortgage, setMortgage] = useState([])
 
-    // const handleClick = (initalLoan, interestRate, loanTerm, downPayment) => {
-    //     let minPayment = bank.maximumLoan / 100 * bank.minimumDownPayment
-    //     console.log(+initalLoan, interestRate, loanTerm)
-    //     if (interestRate < minPayment) {
-    //         setError(`Down payment is smaller than ${minPayment}!`)
-    //     }
-    //     if (+initalLoan > bank.maximumLoan) {
-    //         setError(`Initial loan is bigger than ${bank.maximumLoan}!`)
-    //     }
-    //     // else {
-    //         const monthPay = monthlyPayment(+initalLoan, +interestRate, +loanTerm)
-    //         console.log('sklsks')
-    //         // setResult(monthPay)
-    //         table(monthPay, initalLoan, downPayment)
-    //         // setMortgage({ monthPay, initalLoan, downPayment })
-    //     // }
-    // }
-
-    const handleClick = (initialLoan, interestRate, loanTerm, downPayment) => {
+    const handleClick  = (initialLoan, interestRate, loanTerm, downPayment) => {
         const monthPay = +monthlyPayment(+initialLoan, +interestRate, +loanTerm)
         let arr = []
-        const table = [...Array(loanTerm).keys()].map(i => i + 1).forEach((el, i) => {
+        const _ = [...Array(loanTerm).keys()].map(i => i + 1).forEach((el, i) => {
             i+=1
             
             const prevLoanBalance = i === 1 ? initialLoan : arr[i - 2].loanBalance
@@ -40,21 +22,20 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank }) => {
      
             const rate = (interestRate / 12 / 100).toFixed(5)
 
-            const interestPayment = prevLoanBalance * +rate
+            const interestPayment = prevLoanBalance * rate
             
-            const loanBalance = prevLoanBalance - (monthPay - interestPayment) > 0 ? (prevLoanBalance - (monthPay - interestPayment)) : 0
-    
+            const loanBalance = prevLoanBalance - (monthPay - interestPayment) > 1 ? (prevLoanBalance - (monthPay - interestPayment)) : 0
+            
+            let equity = +prevEquity + (+monthPay - +interestPayment)
+
             arr.push({
                 month: i,
                 totalPayment: monthPay.toFixed(2),
                 interestPayment: interestPayment.toFixed(2),
                 loanBalance: loanBalance.toFixed(2),
-               
+                equity: equity.toFixed(2)
             })
-            
         })
-        
-
         setTableObj(arr)
     }
 
@@ -67,7 +48,6 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank }) => {
                 setBank={setBank}
                 bank={bank}
                 handleClick={handleClick}
-                result={result}
                 error={error}
             />
             <MortgageTable

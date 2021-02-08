@@ -63,7 +63,7 @@ function App() {
     }
 
     if (username.trim() !== '' && password.trim() !== '') {
-     
+
       const res = await API.signin(user)
       try {
         if (res.token !== undefined) {
@@ -93,8 +93,22 @@ function App() {
 
 
   const createBank = async () => {
-    const newBank = await API.create(bank)
-    setBanks([...banks, newBank])
+    let check = false
+    for(let key in bank) {
+      if(bank[key] !== '')
+        check = true
+      else 
+        check = false
+    }
+    
+    if(check) {
+      const newBank = await API.create(bank)
+      setBanks([...banks, newBank])
+      setBank({ name: '', interestRate: '', maximumLoan: '', minimumDownPayment: '', loanTerm: '' })
+      setErr('')
+    } else {
+      setErr('Something went wrong!')
+    }
   }
 
   const removeBank = async id => {
@@ -118,8 +132,6 @@ function App() {
     }
   }
 
-
-
   const monthlyPayment = (initalLoan, interestRate, loanTerm) => {
     let result = (initalLoan * (interestRate / 100 / 12) * Math.pow(1 + interestRate / 100 / 12, loanTerm)) / (Math.pow(1 + interestRate / 100 / 12, loanTerm) - 1)
     return result.toFixed(2)
@@ -140,6 +152,7 @@ function App() {
             setBank={setBank}
             removeBank={removeBank}
             openModal={openModal}
+            err={err} 
           />
 
           <BankModal
@@ -159,9 +172,6 @@ function App() {
             setBank={setBank}
             bank={bank}
           />
-          {/* <MortgageTable 
-            bank={bank}
-          /> */}
         </Route>
         <Route path='/signin'>
           <SignIn
