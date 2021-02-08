@@ -7,7 +7,6 @@ exports.create = (req, res) => {
         _id: new mongoose.Types.ObjectId(),
         ...req.body
     })
-
     bank
         .save()
         .then(bank => res.status(200).send(bank))
