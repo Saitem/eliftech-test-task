@@ -40,6 +40,14 @@ const API = {
             }).catch(() => {
                 return 400
             })
+    },
+    createMortgage: (mortgage, user_id) => {
+        return axios.post(baseUrl + '/mortgage' + user_id)
+            .then(res => {
+                return res
+            }).catch(err => {
+                return err
+            })
     }
 }
 

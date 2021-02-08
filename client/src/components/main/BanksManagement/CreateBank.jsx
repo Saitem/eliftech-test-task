@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button';
 
 export const CreateBank = ({ createBank, bank, setBank }) => {
-    // const classes = useStyles();
 
     const constraintСheck = (value, key, type, min, max) => {
         if (value <= max && value >= min || type === 'string') {
@@ -14,8 +12,6 @@ export const CreateBank = ({ createBank, bank, setBank }) => {
             return
         }
     }
-
-
 
     return (
         <Box display="flex" justifyContent="center">

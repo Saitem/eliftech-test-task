@@ -17,6 +17,9 @@ const MortgageSchema = new Schema({
         name: String,
         interestRate: Number,
         loanTerm: Number
+    },
+    user_id: {
+        type: String
     }
 })
 
