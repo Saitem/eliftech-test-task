@@ -31,7 +31,8 @@ export const MortgageCalc = ({ banks, monthlyPayment, bank, setBank, handleClick
                     onChange={e => setDownPayment(e.target.value)}
                 />
                 <br />
-                <select>
+                <select
+                >
                     {banks.map(bank => (
                         <option value={bank.name} onClick={() => setBank(bank)}>{bank.name}</option>
                     ))}

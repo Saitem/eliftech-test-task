@@ -32,16 +32,23 @@ function App() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [err, setErr] = useState('')
+  const [historyTable, setHistoryTable] = useState([])
 
   const openModal = (bank) => {
     setIsOpen(true)
     setBank(bank)
   }
 
+
   const createMortgage = async (mortgage) => {
-    // console.log(getFormLocalStorage('token').user._id)
     const res = await API.createMortgage('/' + getFormLocalStorage('token').user._id, mortgage, getFormLocalStorage('token').token)
-    // console.log(mortgage)
+    // console.log(res.data)
+    setHistoryTable([...historyTable, res])
+  }
+
+  const removeMortgage = async id => {
+    await API.removeMortgageHistory(getFormLocalStorage('token').user._id, id, getFormLocalStorage('token').token)
+    getMortHistory()
   }
 
   const signUp = async (func) => {
@@ -49,7 +56,9 @@ function App() {
       username,
       password,
     }
+
     const res = await API.signup(user)
+
     if (res.status === 200 && func !== undefined) {
       func()
       setUsername('')
@@ -69,8 +78,8 @@ function App() {
     }
 
     if (username.trim() !== '' && password.trim() !== '') {
-
       const res = await API.signin(user)
+
       try {
         if (res.token !== undefined) {
           await addToLocalStorage(res)
@@ -93,8 +102,14 @@ function App() {
     setBanks(data)
   }
 
+  const getMortHistory = async () => {
+    let data = await API.getMortgageHistory('/' + getFormLocalStorage('token').user._id, getFormLocalStorage('token').token)
+    setHistoryTable(data)
+  }
+
   useEffect(() => {
     getBanks()
+    getMortHistory()
   }, [])
 
 
@@ -143,7 +158,9 @@ function App() {
     return result.toFixed(2)
   }
 
-  console.log(bank)
+
+
+  // console.log(historyTable)
 
   return (
     <Router>
@@ -178,6 +195,8 @@ function App() {
             setBank={setBank}
             bank={bank}
             createMortgage={createMortgage}
+            historyTable={historyTable}
+            removeMortgage={removeMortgage}
           />
         </Route>
         <Route path='/signin'>

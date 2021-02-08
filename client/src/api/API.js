@@ -44,10 +44,26 @@ const API = {
     createMortgage: (user_id, mortgage, token) => {
         return axios.post(baseUrl + '/mortgage' + user_id, mortgage, { headers: { 'access_token': token } })
             .then(res => {
-                return res
+                return res.data
             }).catch(err => {
                 return err
             })
+    },
+    getMortgageHistory: (user_id, token) => {
+        return axios.get(baseUrl + '/mortgage' + user_id, { headers: { 'access_token': token } })
+            .then(res => {
+                return res.data
+            }).catch(err => { 
+                return err
+            })
+    },
+    removeMortgageHistory: (user_id, id, token) => {
+        return axios.delete(`${baseUrl}/mortgage/${user_id}/${id}`, { headers: { 'access_token': token } })
+        .then(res => {
+            return res
+        }).catch(err => { 
+            return err
+        })
     }
 }
 
