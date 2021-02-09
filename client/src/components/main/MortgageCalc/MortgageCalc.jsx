@@ -3,13 +3,13 @@ import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button';
 
-export const MortgageCalc = ({ banks, monthlyPayment, bank, setBank, handleClick, error }) => {
+export const MortgageCalc = ({ banks, bank, setBank, handleClick, error }) => {
     const [initalLoan, setInitialLoan] = useState('')
     const [downPayment, setDownPayment] = useState('')
   
     return (
         <>
-            <Box display="flex" justifyContent="center">
+            <Box display="flex" p={2} justifyContent="center">
                 <br />
 
                 <TextField

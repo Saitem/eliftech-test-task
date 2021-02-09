@@ -22,7 +22,6 @@ exports.create = (req, res) => {
 }
 
 exports.getAll = (req, res) => {
-    console.log('je;;')
     User.findById({ _id: req.mortgage._id })
         .then(() => {
             Mortgage.find({ user_id: req.params.user_id })

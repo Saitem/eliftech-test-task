@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import {
     Link,
@@ -33,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
 export const Header = () => {
     const classes = useStyles();
 
+
+  const logOut = () => {
+    localStorage.clear()
+  }
+
+
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -45,6 +50,7 @@ export const Header = () => {
                     <Link className={classes.link} to='banks'>Banks</Link>
                     <Link className={classes.link} to='calc'>Mortgage Calculator</Link>
                     <Link className={classes.link} to='signin'>Login</Link>
+                    <Link className={classes.link} onClick={() => logOut()}>Log Out</Link>
                 </Toolbar>
             </AppBar>
         </div>

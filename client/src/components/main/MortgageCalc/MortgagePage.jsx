@@ -1,4 +1,3 @@
-import { LinearProgress } from '@material-ui/core'
 import React, { useState } from 'react'
 import { MortgageCalc } from './MortgageCalc'
 import { MortgageTable } from './MortgageTable'
@@ -36,9 +35,8 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank, createMortg
     const handleClick  = (initialLoan, interestRate, loanTerm, downPayment) => {
         const monthPay = +monthlyPayment(+initialLoan, +interestRate, +loanTerm)
         let arr = []
-        const _ = [...Array(loanTerm).keys()].map(i => i + 1).forEach((el, i) => {
-            i+=1
-            
+  
+        for(let i = 1; i <= loanTerm; i++) {
             const prevLoanBalance = i === 1 ? initialLoan : arr[i - 2].loanBalance
             const prevEquity = i === 1 ? downPayment : arr[i - 2].equity
      
@@ -57,21 +55,22 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank, createMortg
                 loanBalance: loanBalance.toFixed(2),
                 equity: equity.toFixed(2)
             })
-        })
+        }
 
         setTableObj(arr)
- 
-        createMortgage({
-            initialLoan,
-            downPayment,
-            historyTable: arr,
-            bank: {
-                name: bank.name,
-                interestRate: bank.interestRate,
-                loanTerm: bank.loanTerm
-            },
-            user_id: JSON.parse(localStorage.getItem('token')).user._id
-        })
+
+        if(JSON.parse(localStorage.getItem('token')) !== null)
+            createMortgage({
+                initialLoan,
+                downPayment,
+                historyTable: arr,
+                bank: {
+                    name: bank.name,
+                    interestRate: bank.interestRate,
+                    loanTerm: bank.loanTerm
+                },
+                user_id: JSON.parse(localStorage.getItem('token')).user._id
+            })
     }
 
     const showTable = id => {

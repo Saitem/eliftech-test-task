@@ -6,7 +6,6 @@ import {
 import API from './api/API'
 import { Header } from './components/layout/Header'
 import { BanksManagement } from './components/main/BanksManagement/BanksManagement'
-import { makeStyles } from '@material-ui/core/styles'
 import { BankModal } from './components/main/BanksManagement/BankModal'
 import { MortgagePage } from './components/main/MortgageCalc/MortgagePage'
 import { SignUp } from './components/auth/SignUp'
@@ -33,7 +32,7 @@ function App() {
   const [password, setPassword] = useState('')
   const [err, setErr] = useState('')
   const [historyTable, setHistoryTable] = useState([])
-
+  
   const openModal = (bank) => {
     setIsOpen(true)
     setBank(bank)
@@ -60,7 +59,7 @@ function App() {
     const res = await API.signup(user)
 
     if (res.status === 200 && func !== undefined) {
-      func()
+      
       setUsername('')
       setPassword('')
     }
@@ -103,8 +102,10 @@ function App() {
   }
 
   const getMortHistory = async () => {
-    let data = await API.getMortgageHistory('/' + getFormLocalStorage('token').user._id, getFormLocalStorage('token').token)
-    setHistoryTable(data)
+    if(getFormLocalStorage('token') !== null) {
+      let data = await API.getMortgageHistory('/' + getFormLocalStorage('token').user._id, getFormLocalStorage('token').token)
+      setHistoryTable(data)
+    }
   }
 
   useEffect(() => {
@@ -157,7 +158,6 @@ function App() {
     let result = (initalLoan * (interestRate / 100 / 12) * Math.pow(1 + interestRate / 100 / 12, loanTerm)) / (Math.pow(1 + interestRate / 100 / 12, loanTerm) - 1)
     return result.toFixed(2)
   }
-
 
 
   // console.log(historyTable)

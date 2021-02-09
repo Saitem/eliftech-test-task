@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button';
@@ -14,7 +14,7 @@ export const CreateBank = ({ createBank, bank, setBank }) => {
     }
 
     return (
-        <Box display="flex" justifyContent="center">
+        <Box display="flex" p={2} justifyContent="center">
             <TextField
                 id="filled-basic"
                 label="Name:"

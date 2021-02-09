@@ -18,9 +18,9 @@ exports.signup = async (req, res) => {
 
 	try {
 		const savedUser = user.save()
-		res.send({ user: user._id })	
+		res.send({ user: user._id, success: true })	
 	} catch (err) {
-		res.status(400).send(err)
+		res.status(400).send({err, success: false})
 	}
 }
 
