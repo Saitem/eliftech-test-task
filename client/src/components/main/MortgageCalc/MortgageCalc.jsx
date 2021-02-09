@@ -8,11 +8,9 @@ export const MortgageCalc = ({ banks, bank, setBank, handleClick, error }) => {
     const [downPayment, setDownPayment] = useState('')
 
     const getBank = (value) => {
-        console.log(value)
         const findedBank = banks.find(bank => bank._id === value)
         setBank(findedBank)
     }
-
   
     return (
         <>

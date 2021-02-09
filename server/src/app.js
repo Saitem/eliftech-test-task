@@ -7,14 +7,14 @@ const config = require('../config.json')
 
 const app = express()
 
-const PORT = 5000
+const PORT = process.env.PORT || 5000
 
 const bankRoute = require('./routes/bank.route')
 const authRoute = require('./routes/user.route')
 const mortgageRoute = require('./routes/mortgage.route')
 
 app.use(express.json())
-app.use(cors())
+app.use(cors('*'))
 
 app.use(express.static(path.join(__dirname, '../client/build')))
 
