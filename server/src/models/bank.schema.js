@@ -27,7 +27,7 @@ const BankSchema = new Schema({
         type: Number,
         required: true
     }
-})
+}, { timestamps: true })
 
 const Bank = mongoose.model('Bank', BankSchema)
 

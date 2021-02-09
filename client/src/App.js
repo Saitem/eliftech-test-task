@@ -25,9 +25,12 @@ const customStyles = {
 }
 
 function App() {
+
+  const initialBankState = { name: '', interestRate: '', maximumLoan: '', minimumDownPayment: '', loanTerm: '' }
+
   const [modalIsOpen, setIsOpen] = useState(false)
   const [banks, setBanks] = useState([])
-  const [bank, setBank] = useState({})
+  const [bank, setBank] = useState(initialBankState)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [err, setErr] = useState('')
@@ -63,8 +66,10 @@ function App() {
       func('/signIn')
       setUsername('')
       setPassword('')
+      setAutherr('')
     } else {
       func('/signUp')
+      setAutherr(res.err)
       setUsername('')
       setPassword('')
     }
@@ -106,7 +111,7 @@ function App() {
   const getBanks = async () => {
     let res = await API.getAll()
     if (res.status === 200)
-      setBanks(res.data)
+      setBanks([...res.data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)))
   }
 
   const getMortHistory = async () => {
@@ -124,14 +129,15 @@ function App() {
 
   const createBank = async () => {
     const isBankRight = Object.keys(bank).some(key => !bank[key])
-
+ 
     if (!isBankRight) {
       const newBank = await API.create(bank)
-      setBanks([...banks, newBank])
-      setBank({ name: '', interestRate: '', maximumLoan: '', minimumDownPayment: '', loanTerm: '' })
+      setBanks([newBank, ...banks])//.sort((a, b) => new Date(b) - new Date(a)))
+      setBank(initialBankState)
       setErr('')
     } else {
       setErr('Something went wrong!')
+      setBank(initialBankState)
     }
   }
 
@@ -222,6 +228,7 @@ function App() {
               password={password}
               setPassword={pw => setPassword(pw)}
               signUp={signUp}
+              authErr={authErr}
             />
           </Route>
         </Switch>

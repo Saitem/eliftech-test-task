@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'https://eliftech-test-task.herokuapp.com/api'
+const baseUrl = 'http://localhost:5000/api'//'https://eliftech-test-task.herokuapp.com/api'
 
 const API = {
     getAll: () => {
