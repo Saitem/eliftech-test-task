@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {
   Route,
-  BrowserRouter as Router
+  HashRouter as Router,
+  Redirect,
+  Switch
 } from 'react-router-dom'
 import API from './api/API'
 import { Header } from './components/layout/Header'
@@ -31,6 +33,7 @@ function App() {
   const [err, setErr] = useState('')
   const [historyTable, setHistoryTable] = useState([])
   const [authErr, setAutherr] = useState('')
+  const [isLogined, setIsLogined] = useState(false)
 
   const openModal = (bank) => {
     setIsOpen(true)
@@ -55,8 +58,8 @@ function App() {
     }
 
     const res = await API.signup(user)
-    
-    if(res.success) {
+
+    if (res.success) {
       func('/signIn')
       setUsername('')
       setPassword('')
@@ -79,9 +82,10 @@ function App() {
 
     if (username.trim() !== '' && password.trim() !== '') {
       const res = await API.signin(user)
-      
-      if(res.success) {
+
+      if (res.success) {
         console.log(res)
+        setIsLogined(res.success)
         addToLocalStorage(res)
         func('/banks')
         setUsername('')
@@ -101,12 +105,12 @@ function App() {
 
   const getBanks = async () => {
     let res = await API.getAll()
-    if(res.status === 200)
+    if (res.status === 200)
       setBanks(res.data)
   }
 
   const getMortHistory = async () => {
-    if(getFormLocalStorage('token') !== null) {
+    if (getFormLocalStorage('token') !== null) {
       let data = await API.getMortgageHistory('/' + getFormLocalStorage('token').user._id, getFormLocalStorage('token').token)
       setHistoryTable(data)
     }
@@ -119,15 +123,9 @@ function App() {
 
 
   const createBank = async () => {
-    let check = false
-      if(bank.name !== '' && bank.interestRate !== '' &&  bank.loanTerm !== '' &&  bank.minimumDownPayment !== '' &&  bank.maximumLoan !== '')
-        check = true
-      else 
-        check = false
+    const isBankRight = Object.keys(bank).some(key => !bank[key])
 
-      console.log(check)
-    
-    if(check === true) {
+    if (!isBankRight) {
       const newBank = await API.create(bank)
       setBanks([...banks, newBank])
       setBank({ name: '', interestRate: '', maximumLoan: '', minimumDownPayment: '', loanTerm: '' })
@@ -138,7 +136,7 @@ function App() {
   }
 
   const removeBank = async id => {
-    const res = await API.remove(id)
+    await API.remove(id)
     getBanks()
   }
 
@@ -164,61 +162,69 @@ function App() {
   }
 
   return (
+
     <Router>
       <div className="App">
-        <Header />
-        <Route path='/banks'>
-          <BanksManagement
-            setBank={b => setBank(b)}
-            createBank={createBank}
-            banks={banks}
-            bank={bank}
-            setBank={setBank}
-            removeBank={removeBank}
-            openModal={openModal}
-            err={err} 
-          />
+        <Header 
+          setIsLogined={setIsLogined}
+          isLogined={isLogined}
+        />
+        <Switch>
+          <Redirect from='/' to='/banks' exact />
+          <Route path='/banks'>
+            <BanksManagement
+              setBank={b => setBank(b)}
+              createBank={createBank}
+              banks={banks}
+              bank={bank}
+              setBank={setBank}
+              removeBank={removeBank}
+              openModal={openModal}
+              err={err}
+              is
+            />
 
-          <BankModal
-            isOpen={modalIsOpen}
-            ariaHideApp={false}
-            closeModal={closeModal}
-            style={customStyles}
-            editBank={editBank}
-            bank={bank}
-            setBank={setBank}
-          />
-        </Route>
-        <Route path='/calc'>
-          <MortgagePage
-            banks={banks}
-            monthlyPayment={monthlyPayment}
-            setBank={setBank}
-            bank={bank}
-            createMortgage={createMortgage}
-            historyTable={historyTable}
-            removeMortgage={removeMortgage}
-          />
-        </Route>
-        <Route path='/signin'>
-          <SignIn
-            username={username}
-            setUsername={un => setUsername(un)}
-            password={password}
-            setPassword={pw => setPassword(pw)}
-            signIn={signIn}
-            authErr={authErr}
-          />
-        </Route>
-        <Route path='/signup'>
-          <SignUp
-            username={username}
-            setUsername={un => setUsername(un)}
-            password={password}
-            setPassword={pw => setPassword(pw)}
-            signUp={signUp}
-          />
-        </Route>
+            <BankModal
+              isOpen={modalIsOpen}
+              ariaHideApp={false}
+              closeModal={closeModal}
+              style={customStyles}
+              editBank={editBank}
+              bank={bank}
+              setBank={setBank}
+            />
+          </Route>
+          <Route path='/calc'>
+            <MortgagePage
+              banks={banks}
+              monthlyPayment={monthlyPayment}
+              setBank={setBank}
+              bank={bank}
+              createMortgage={createMortgage}
+              historyTable={historyTable}
+              removeMortgage={removeMortgage}
+            />
+          </Route>
+          <Route path='/signin'>
+            <SignIn
+              username={username}
+              setUsername={un => setUsername(un)}
+              password={password}
+              setPassword={pw => setPassword(pw)}
+              signIn={signIn}
+              authErr={authErr}
+            />
+          </Route>
+          <Route path='/signup'>
+            <SignUp
+              username={username}
+              setUsername={un => setUsername(un)}
+              password={password}
+              setPassword={pw => setPassword(pw)}
+              signUp={signUp}
+            />
+          </Route>
+        </Switch>
       </div>
     </Router>
   );

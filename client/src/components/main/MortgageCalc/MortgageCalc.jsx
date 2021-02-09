@@ -39,8 +39,9 @@ export const MortgageCalc = ({ banks, bank, setBank, handleClick, error }) => {
                 <select
                     value={bank._id}
                     onChange={e => getBank(e.target.value)}
+                    required
                 >
-                    <option value="value">Enter bank</option>
+                    <option value=''>Enter bank</option>
                     {banks.map(bank => (
                         <option key={bank._id} value={bank._id}>{bank.name}</option>
                     ))}

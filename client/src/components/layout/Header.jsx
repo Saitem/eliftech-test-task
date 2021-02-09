@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import {
     Link,
 } from 'react-router-dom'
-
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,13 +29,17 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export const Header = () => {
+export const Header = ({ isLogined, setIsLogined }) => {
     const classes = useStyles();
+    
+    const history = useHistory()
 
 
-  const logOut = () => {
-    localStorage.clear()
-  }
+    const logOut = () => {
+        localStorage.clear()
+        setIsLogined(false)
+        history.push('/banks')
+    }
 
     return (
         <div className={classes.root}>
@@ -48,8 +52,9 @@ export const Header = () => {
           </Typography>
                     <Link className={classes.link} to='banks'>Banks</Link>
                     <Link className={classes.link} to='calc'>Mortgage Calculator</Link>
-                    <Link className={classes.link} to='signin'>Login</Link>
-                    <Link className={classes.link} to='' onClick={() => logOut()}>Log Out</Link>
+                    {!isLogined ? <Link className={classes.link} to='signin' >Login</Link>
+                        :
+                        <Link className={classes.link} to='' onClick={() => logOut()}>Log Out</Link>}
                 </Toolbar>
             </AppBar>
         </div>

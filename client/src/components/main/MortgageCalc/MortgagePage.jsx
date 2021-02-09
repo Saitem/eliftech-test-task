@@ -7,33 +7,45 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank, createMortg
     const [error, setError] = useState('')
     const [tableObj, setTableObj] = useState([])
 
-    const handleValidation = (initialLoan, interestRate, loanTerm, downPayment) => {
+
+    
+    const handleValidationClick = (initialLoan, interestRate, loanTerm, downPayment) => {
         let isValid = true
         let minDownPayment = (bank.minimumDownPayment / 100) * initialLoan
 
+        if(!bank.name) {
+            isValid = false
+            setError('Select bank!')
+            return 
+        }
         if(initialLoan === '' || downPayment === '') {
             isValid = false
             setError(`You haven't entered anything!`)
+            return
         }
         if(initialLoan > bank.maximumLoan) { 
             isValid = false
             setError(`Initial loan bigger than ${bank.maximumLoan}`)
+            return 
         }
         if(minDownPayment > downPayment) { 
             isValid = false
             setError(`Down payment is less than the minimum ${minDownPayment} = ${bank.minimumDownPayment}%`)
+            return 
         }
         if(initialLoan < 0) {
             isValid = false
             setError('Initial loan less than zero ')
+            return
         }
         if(isValid) {
             setError('')
-            handleClick(initialLoan, interestRate, loanTerm, downPayment)
+            generateTable(initialLoan, interestRate, loanTerm, downPayment)
         }
     }
 
-    const handleClick  = (initialLoan, interestRate, loanTerm, downPayment) => {
+    const generateTable  = (initialLoan, interestRate, loanTerm, downPayment) => {
+
         const monthPay = +monthlyPayment(+initialLoan, +interestRate, +loanTerm)
         let arr = []
   
@@ -86,7 +98,7 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank, createMortg
                 monthlyPayment={monthlyPayment}
                 setBank={setBank}
                 bank={bank}
-                handleClick={handleValidation}
+                handleClick={handleValidationClick}
                 error={error}
             />
             <MortgageTable
