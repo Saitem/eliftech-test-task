@@ -11,8 +11,6 @@ import { MortgagePage } from './components/main/MortgageCalc/MortgagePage'
 import { SignUp } from './components/auth/SignUp'
 import { SignIn } from './components/auth/SignIn'
 
-// import { MortgageTable } from './components/main/MortgageCalc/MortgageTable'
-
 const customStyles = {
   content: {
     top: '50%',

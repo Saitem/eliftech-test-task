@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const MortgageTable = ({bank, tableObj}) => {
     const classes = useStyles()
-    console.log(tableObj.loanTerm)
+    console.log(tableObj)
     return (
         <Box display="flex" justifyContent="center">
             <table classNAme={classes.table}>

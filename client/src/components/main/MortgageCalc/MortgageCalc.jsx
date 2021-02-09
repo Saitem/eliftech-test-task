@@ -6,6 +6,13 @@ import Button from '@material-ui/core/Button';
 export const MortgageCalc = ({ banks, bank, setBank, handleClick, error }) => {
     const [initalLoan, setInitialLoan] = useState('')
     const [downPayment, setDownPayment] = useState('')
+
+    const getBank = (value) => {
+
+        const findedBank = banks.find(bank => bank._id === value)
+        setBank(findedBank)
+    }
+
   
     return (
         <>
@@ -32,14 +39,17 @@ export const MortgageCalc = ({ banks, bank, setBank, handleClick, error }) => {
                 />
                 <br />
                 <select
+                    value={bank._id}
+                    onChange={e => getBank(e.target.value)}
                 >
                     {banks.map(bank => (
-                        <option value={bank.name} onClick={() => setBank(bank)}>{bank.name}</option>
+                        <option key={bank._id} value={bank._id}>{bank.name}</option>
                     ))}
                 </select>
                 <Button variant="contained" color="primary"
                     onClick={() => handleClick(initalLoan, bank.interestRate, bank.loanTerm, downPayment)}
                 >Calculate</Button>
+                {/* <button onCLick={() => getBank()}>click</button> */}
             </Box>
             <Box display="flex" justifyContent="center" color='red'>{error}</Box>
         </>
