@@ -1,0 +1,8 @@
+{
+    "common": {
+        "MONGO_USER":"admin1234",
+        "MONGO_PASS":"admin1234",
+        "MONGO_DBNAME":"test_task",
+        "TOKEN_SECRET":"SECRET_TOKEN"
+    }
+}

@@ -8,7 +8,7 @@ export const MortgageCalc = ({ banks, bank, setBank, handleClick, error }) => {
     const [downPayment, setDownPayment] = useState('')
 
     const getBank = (value) => {
-
+        console.log(value)
         const findedBank = banks.find(bank => bank._id === value)
         setBank(findedBank)
     }
@@ -42,6 +42,7 @@ export const MortgageCalc = ({ banks, bank, setBank, handleClick, error }) => {
                     value={bank._id}
                     onChange={e => getBank(e.target.value)}
                 >
+                    <option value="value">Enter bank</option>
                     {banks.map(bank => (
                         <option key={bank._id} value={bank._id}>{bank.name}</option>
                     ))}

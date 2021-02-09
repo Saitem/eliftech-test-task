@@ -30,7 +30,8 @@ function App() {
   const [password, setPassword] = useState('')
   const [err, setErr] = useState('')
   const [historyTable, setHistoryTable] = useState([])
-  
+  const [authErr, setAutherr] = useState('')
+
   const openModal = (bank) => {
     setIsOpen(true)
     setBank(bank)
@@ -39,7 +40,6 @@ function App() {
 
   const createMortgage = async (mortgage) => {
     const res = await API.createMortgage('/' + getFormLocalStorage('token').user._id, mortgage, getFormLocalStorage('token').token)
-    // console.log(res.data)
     setHistoryTable([...historyTable, res])
   }
 
@@ -55,9 +55,13 @@ function App() {
     }
 
     const res = await API.signup(user)
-
-    if (res.status === 200 && func !== undefined) {
-      
+    
+    if(res.success) {
+      func('/signIn')
+      setUsername('')
+      setPassword('')
+    } else {
+      func('/signUp')
       setUsername('')
       setPassword('')
     }
@@ -67,8 +71,7 @@ function App() {
 
   const getFormLocalStorage = value => JSON.parse(localStorage.getItem(value))
 
-
-  const signIn = async () => {
+  const signIn = async (func) => {
     let user = {
       username,
       password
@@ -76,16 +79,18 @@ function App() {
 
     if (username.trim() !== '' && password.trim() !== '') {
       const res = await API.signin(user)
-
-      try {
-        if (res.token !== undefined) {
-          await addToLocalStorage(res)
-          setUsername('')
-          setPassword('')
-          setErr('')
-        }
-      } catch {
-        setErr('Error')
+      
+      if(res.success) {
+        console.log(res)
+        addToLocalStorage(res)
+        func('/banks')
+        setUsername('')
+        setPassword('')
+      } else {
+        func('/signIn')
+        setAutherr('Invalid username or password!')
+        setUsername('')
+        setPassword('')
       }
     }
   }
@@ -95,8 +100,9 @@ function App() {
   }
 
   const getBanks = async () => {
-    let data = await API.getAll()
-    setBanks(data)
+    let res = await API.getAll()
+    if(res.status === 200)
+      setBanks(res.data)
   }
 
   const getMortHistory = async () => {
@@ -114,14 +120,14 @@ function App() {
 
   const createBank = async () => {
     let check = false
-    for(let key in bank) {
-      if(bank[key] !== '')
+      if(bank.name !== '' && bank.interestRate !== '' &&  bank.loanTerm !== '' &&  bank.minimumDownPayment !== '' &&  bank.maximumLoan !== '')
         check = true
       else 
         check = false
-    }
+
+      console.log(check)
     
-    if(check) {
+    if(check === true) {
       const newBank = await API.create(bank)
       setBanks([...banks, newBank])
       setBank({ name: '', interestRate: '', maximumLoan: '', minimumDownPayment: '', loanTerm: '' })
@@ -156,9 +162,6 @@ function App() {
     let result = (initalLoan * (interestRate / 100 / 12) * Math.pow(1 + interestRate / 100 / 12, loanTerm)) / (Math.pow(1 + interestRate / 100 / 12, loanTerm) - 1)
     return result.toFixed(2)
   }
-
-
-  // console.log(historyTable)
 
   return (
     <Router>
@@ -204,6 +207,7 @@ function App() {
             password={password}
             setPassword={pw => setPassword(pw)}
             signIn={signIn}
+            authErr={authErr}
           />
         </Route>
         <Route path='/signup'>

@@ -37,8 +37,8 @@ export const SignUp = ({username, password, setUsername, setPassword, signUp}) =
 
   const history = useHistory();
 
-  const toSignIn = () => {
-    history.push("/signIn")
+  const toSignIn = (path) => {
+    history.push(path)
   }
 
 
@@ -91,7 +91,7 @@ export const SignUp = ({username, password, setUsername, setPassword, signUp}) =
               color="primary"
               className={classes.submit}
               onClick={() => {
-                signUp(toSignIn())
+                signUp(toSignIn)
               }}
             >
               Sign Up

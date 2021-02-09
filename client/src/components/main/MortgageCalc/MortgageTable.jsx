@@ -14,20 +14,25 @@ const useStyles = makeStyles((theme) => ({
 
 export const MortgageTable = ({bank, tableObj}) => {
     const classes = useStyles()
-    console.log(tableObj)
     return (
         <Box display="flex" justifyContent="center">
-            <table classNAme={classes.table}>
-                <tr className={classes.tr}>
-                    <th className={classes.th}>Month</th>
-                    <th className={classes.th}>Total payment</th>
-                    <th className={classes.th}>Interest payment</th>
-                    <th className={classes.th}>Loan balance</th>
-                    <th className={classes.th}>Equity</th>
-                </tr>
+            <table className={classes.table}>
+                <thead>
+                    <tr className={classes.tr}>
+                        <th className={classes.th}>Month</th>
+                        <th className={classes.th}>Total payment</th>
+                        <th className={classes.th}>Interest payment</th>
+                        <th className={classes.th}>Loan balance</th>
+                        <th className={classes.th}>Equity</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {
                     tableObj.map(el => (
-                        <tr className={classes.tr}>
+                        <tr 
+                            key={el.month}
+                            className={classes.tr}
+                        >
                             <th className={classes.th}>{el.month}</th>
                             <th className={classes.th}>{el.totalPayment}</th>
                             <th className={classes.th}>{el.interestPayment}</th>
@@ -36,6 +41,7 @@ export const MortgageTable = ({bank, tableObj}) => {
                         </tr>
                     ))
                 }
+                </tbody>
             </table>
         </Box>
     )

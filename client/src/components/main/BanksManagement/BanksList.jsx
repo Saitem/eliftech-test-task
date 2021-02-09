@@ -6,6 +6,7 @@ export const BanksList = ({ banks, removeBank, openModal }) => {
         <div>
             {banks.map(bank => (
                 <Bank
+                    key={bank._id}
                     bank={bank}
                     removeBank={removeBank}
                     openModal={openModal}

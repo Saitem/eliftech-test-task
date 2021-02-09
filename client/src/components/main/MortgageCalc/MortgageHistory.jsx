@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export const MortgageHistory = ({ historyTable, showTable, removeMortgage }) => {
   const classes = useStyles();
 
+  // console.log(historyTable[0].bank.name)
 
   return (
 
@@ -33,7 +34,8 @@ export const MortgageHistory = ({ historyTable, showTable, removeMortgage }) => 
         <Box display='flex'>
           {
             historyTable.map(history => (
-              <Box className={classes.block}>
+              
+              <Box key={history._id} className={classes.block}>
                 <div className={classes.data}>
                   <ListItemText className={classes.listItem}>Bank name: {history.bank.name}</ListItemText>
                   <ListItemText>Loan: {history.initialLoan}</ListItemText>

@@ -37,7 +37,6 @@ export const Header = () => {
     localStorage.clear()
   }
 
-
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -50,7 +49,7 @@ export const Header = () => {
                     <Link className={classes.link} to='banks'>Banks</Link>
                     <Link className={classes.link} to='calc'>Mortgage Calculator</Link>
                     <Link className={classes.link} to='signin'>Login</Link>
-                    <Link className={classes.link} onClick={() => logOut()}>Log Out</Link>
+                    <Link className={classes.link} to='' onClick={() => logOut()}>Log Out</Link>
                 </Toolbar>
             </AppBar>
         </div>

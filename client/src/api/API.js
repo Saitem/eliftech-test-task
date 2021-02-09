@@ -5,7 +5,7 @@ const baseUrl = 'http://localhost:5000'
 const API = {
     getAll: () => {
         return axios.get(baseUrl)
-            .then(res => res.data)
+            .then(res => res)
             .catch(err => err)
     },
     create: (bank) => {
@@ -30,15 +30,15 @@ const API = {
                     return res.data
                 }
             }).catch(err => {
-                console.log(err)
+                return err.response.data
             })
     },
     signup: (user) => {
         return axios.post(baseUrl + '/signup', user)
             .then(res => {
-                return res
-            }).catch(() => {
-                return 400
+                return res.data
+            }).catch(err => {
+                return err.response.data 
             })
     },
     createMortgage: (user_id, mortgage, token) => {

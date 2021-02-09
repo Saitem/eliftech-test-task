@@ -48,19 +48,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SignIn = ({username, password, setUsername, setPassword, signIn, error}) => {
+export const SignIn = ({username, password, setUsername, setPassword, signIn, authErr}) => {
   const classes = useStyles()
   const history = useHistory()
   
-  const redrect = () => {
-    if(signIn()) {
-      history.push('/banks')
-    }
+  const redirect = (path) => {
+    history.push(path)
   }
 
   return (
     <Container component="main" maxWidth="xs">
-      {error}
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -68,6 +65,7 @@ export const SignIn = ({username, password, setUsername, setPassword, signIn, er
         <Typography component="h1" variant="h5">
           Sign In
         </Typography>
+        <Box color='red' display="flex" justifyContent='center'>{authErr}</Box>
         <div>  
           <TextField
             variant="outlined"
@@ -107,7 +105,7 @@ export const SignIn = ({username, password, setUsername, setPassword, signIn, er
               className={classes.submit}
               to='/home'
               onClick={() => (
-                redrect()
+                signIn(redirect)
               )}
             >
               Sign In

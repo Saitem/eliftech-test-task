@@ -1,7 +1,9 @@
-require('dotenv').config()
+// require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const path = require('path')
+const config = require('../config.json')
 
 const app = express()
 
@@ -14,12 +16,14 @@ const mortgageRoute = require('./routes/mortgage.route')
 app.use(express.json())
 app.use(cors())
 
+app.use(express.static(path.join(__dirname, '../client/build')))
+
 app.use(bankRoute)
 app.use(authRoute)
 app.use(mortgageRoute)
 
 mongoose.connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.o5e2x.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority`,
+    `mongodb+srv://${config.common.MONGO_USER}:${config.common.MONGO_PASS}@cluster0.o5e2x.mongodb.net/${config.common.MONGO_DBNAME}?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true

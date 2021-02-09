@@ -9,7 +9,8 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank, createMortg
 
     const handleValidation = (initialLoan, interestRate, loanTerm, downPayment) => {
         let isValid = true
-        let minDownPayment = interestRate / 100 * initialLoan
+        let minDownPayment = (bank.minimumDownPayment / 100) * initialLoan
+
         if(initialLoan === '' || downPayment === '') {
             isValid = false
             setError(`You haven't entered anything!`)
@@ -20,7 +21,7 @@ export const MortgagePage = ({ banks, monthlyPayment, setBank, bank, createMortg
         }
         if(minDownPayment > downPayment) { 
             isValid = false
-            setError(`Down payment is less than the minimum ${minDownPayment}`)
+            setError(`Down payment is less than the minimum ${minDownPayment} = ${bank.minimumDownPayment}%`)
         }
         if(initialLoan < 0) {
             isValid = false

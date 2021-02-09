@@ -38,7 +38,7 @@ export const CreateBank = ({ createBank, bank, setBank }) => {
                 variant="filled"
                 type="number"
                 value={bank.maximumLoan}
-                onChange={e => constraintСheck(+e.target.value, 'maximumLoan', 'number', 1, 10000000)}
+                onChange={e => constraintСheck(+e.target.value, 'maximumLoan', 'number', 1, 1000000000)}
             />
             <TextField
                 id="filled-basic"
